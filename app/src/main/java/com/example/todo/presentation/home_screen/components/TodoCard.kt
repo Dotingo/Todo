@@ -18,6 +18,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.todo.domain.model.Todo
 import com.example.todo.presentation.common.taskTextStyle
+import com.example.todo.ui.theme.isImportant1Color
+import com.example.todo.ui.theme.isImportant2Color
+import com.example.todo.ui.theme.isImportant3Color
 
 @Composable
 fun TodoCard(
@@ -50,10 +53,28 @@ fun TodoCard(
                     .weight(8f),
                 style = taskTextStyle
             )
-            if (todo.isImportant) {
+            if (todo.isImportant1) {
                 Icon(
                     imageVector = Icons.Rounded.Star,
                     contentDescription = null,
+                    tint = isImportant1Color,
+                    modifier = Modifier
+                        .weight(1f)
+                )
+            }
+            else if (todo.isImportant2){
+                Icon(
+                    imageVector = Icons.Rounded.Star,
+                    contentDescription = null,
+                    tint = isImportant2Color,
+                    modifier = Modifier
+                        .weight(1f)
+                )
+            }else if (todo.isImportant3){
+                Icon(
+                    imageVector = Icons.Rounded.Star,
+                    contentDescription = null,
+                    tint = isImportant3Color,
                     modifier = Modifier
                         .weight(1f)
                 )

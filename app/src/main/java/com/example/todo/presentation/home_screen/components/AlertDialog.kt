@@ -4,15 +4,14 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Clear
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
@@ -45,6 +43,9 @@ import com.example.todo.domain.model.Todo
 import com.example.todo.presentation.MainViewModel
 import com.example.todo.presentation.common.taskTextStyle
 import com.example.todo.presentation.common.toastMsg
+import com.example.todo.ui.theme.isImportant1Color
+import com.example.todo.ui.theme.isImportant2Color
+import com.example.todo.ui.theme.isImportant3Color
 import kotlinx.coroutines.job
 
 @Composable
@@ -56,10 +57,16 @@ fun AlertDialog(
     var text by remember {
         mutableStateOf("")
     }
-    var isImportant by remember {
+    var isImportant1 by remember {
         mutableStateOf(false)
     }
-    val todo = Todo(0, text, isImportant)
+    var isImportant2 by remember {
+        mutableStateOf(false)
+    }
+    var isImportant3 by remember {
+        mutableStateOf(false)
+    }
+    val todo = Todo(0, text, isImportant1, isImportant2, isImportant3)
     val focusRequester = FocusRequester()
     val context = LocalContext.current
 
@@ -107,7 +114,9 @@ fun AlertDialog(
                                 if (text.isNotBlank()) {
                                     mainViewModel.insertTodo(todo)
                                     text = ""
-                                    isImportant = false
+                                    isImportant1 = false
+                                    isImportant2 = false
+                                    isImportant3 = false
                                     onClose()
                                 } else {
                                     toastMsg(
@@ -131,34 +140,116 @@ fun AlertDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .toggleable(
-                                value = isImportant,
-                                onValueChange = {isImportant = it}
+                                value = isImportant1,
+                                onValueChange = {
+                                    isImportant1 = it
+                                    isImportant2 = false
+                                    isImportant3 = false
+                                }
                             ),
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Star,
+                            contentDescription = null,
+                            tint = isImportant1Color,
+                        )
                         Text(
-                            text = "Приоритетная",
+                            text = "Приоритет 1 ур",
                             fontFamily = FontFamily.Monospace,
                             fontSize = 18.sp,
                             modifier = Modifier
                                 .weight(1f)
                         )
-                        Checkbox(checked = isImportant, onCheckedChange = { isImportant = it })
+                        Checkbox(checked = isImportant1, onCheckedChange = {
+                            isImportant1 = it
+                            isImportant2 = false
+                            isImportant3 = false
+                        })
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .toggleable(
+                                value = isImportant2,
+                                onValueChange = {
+                                    isImportant2 = it
+                                    isImportant1 = false
+                                    isImportant3 = false
+                                }
+                            ),
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                        imageVector = Icons.Rounded.Star,
+                        contentDescription = null,
+                        tint = isImportant2Color,
+                    )
+                        Text(
+                            text = "Приоритет 2 ур",
+                            fontFamily = FontFamily.Monospace,
+                            fontSize = 18.sp,
+                            modifier = Modifier
+                                .weight(1f)
+                        )
+                        Checkbox(checked = isImportant2, onCheckedChange = {
+                            isImportant2 = it
+                            isImportant3 = false
+                            isImportant1 = false
+                        })
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .toggleable(
+                                value = isImportant3,
+                                onValueChange = {
+                                    isImportant3 = it
+                                    isImportant2 = false
+                                    isImportant1 = false
+                                }
+                            ),
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Star,
+                            contentDescription = null,
+                            tint = isImportant3Color,
+                        )
+                        Text(
+                            text = "Приоритет 3 ур",
+                            fontFamily = FontFamily.Monospace,
+                            fontSize = 18.sp,
+                            modifier = Modifier
+                                .weight(1f)
+                        )
+                        Checkbox(checked = isImportant3, onCheckedChange = {
+                            isImportant3 = it
+                            isImportant2 = false
+                            isImportant1 = false
+                        })
                     }
                 }
             },
             onDismissRequest = {
                 onClose()
                 text = ""
-                isImportant = false
+                isImportant1 = false
+                isImportant2 = false
+                isImportant3 = false
+
             },
             confirmButton = {
                 Button(onClick = {
                     if (text.isNotBlank()) {
                         mainViewModel.insertTodo(todo)
                         text = ""
-                        isImportant = false
+                        isImportant1 = false
+                        isImportant2 = false
+                        isImportant3 = false
                         onClose()
                     } else {
                         toastMsg(
@@ -174,7 +265,9 @@ fun AlertDialog(
                 OutlinedButton(onClick = {
                     onClose()
                     text = ""
-                    isImportant = false
+                    isImportant1 = false
+                    isImportant2 = false
+                    isImportant3 = false
                 }) {
                     Text(text = "Закрыть")
                 }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,6 +34,9 @@ import androidx.compose.ui.unit.sp
 import com.example.todo.presentation.MainViewModel
 import com.example.todo.presentation.common.taskTextStyle
 import com.example.todo.presentation.common.topAppBarTextStyle
+import com.example.todo.ui.theme.isImportant1Color
+import com.example.todo.ui.theme.isImportant2Color
+import com.example.todo.ui.theme.isImportant3Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +46,9 @@ fun UpdateScreen(
     onBack: () -> Unit
 ) {
     val task = mainViewModel.todo.task
-    val isImportant = mainViewModel.todo.isImportant
+    val isImportant1 = mainViewModel.todo.isImportant1
+    val isImportant2 = mainViewModel.todo.isImportant2
+    val isImportant3 = mainViewModel.todo.isImportant3
 
     LaunchedEffect(key1 = true,
         block = {
@@ -103,14 +109,63 @@ fun UpdateScreen(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                Icon(
+                    imageVector = Icons.Rounded.Star,
+                    contentDescription = null,
+                    tint = isImportant1Color,
+                )
                 Text(
-                    text = "Приоритетная",
+                    text = "Приоритет 1 ур",
                     fontFamily = FontFamily.Monospace,
                     fontSize = 18.sp
                 )
                 Spacer(modifier = Modifier.size(8.dp))
-                Checkbox(checked = isImportant, onCheckedChange = { newValue ->
-                    mainViewModel.updateIsImportant(newValue)
+                Checkbox(checked = isImportant1, onCheckedChange = { newValue ->
+                    mainViewModel.updateIsImportant1(newValue)
+                })
+            }
+            Spacer(modifier = Modifier.size(8.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Star,
+                    contentDescription = null,
+                    tint = isImportant2Color,
+                )
+                Text(
+                    text = "Приоритет 2 ур",
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 18.sp
+                )
+                Spacer(modifier = Modifier.size(8.dp))
+                Checkbox(checked = isImportant2, onCheckedChange = { newValue ->
+                    mainViewModel.updateIsImportant2(newValue)
+                })
+            }
+            Spacer(modifier = Modifier.size(8.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Star,
+                    contentDescription = null,
+                    tint = isImportant3Color,
+                )
+                Text(
+                    text = "Приоритет 3 ур",
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 18.sp
+                )
+                Spacer(modifier = Modifier.size(8.dp))
+                Checkbox(checked = isImportant3, onCheckedChange = { newValue ->
+                    mainViewModel.updateIsImportant3(newValue)
                 })
             }
             Spacer(modifier = Modifier.size(8.dp))

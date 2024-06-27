@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.todo.domain.model.Todo
 import com.example.todo.presentation.MainViewModel
 import com.example.todo.presentation.common.snackbar
 import com.example.todo.presentation.common.topAppBarTextStyle
@@ -79,7 +80,9 @@ fun HomeScreen(
                 contentPadding = PaddingValues(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(items = todos.sortedByDescending { it.isImportant },
+                items(items = todos.sortedWith(compareByDescending<Todo> { it.isImportant1 }
+                    .thenByDescending { it.isImportant2 }
+                    .thenByDescending { it.isImportant3 }),
                     key = { it.id }) { todo ->
                     TodoCard(
                         todo = todo,
