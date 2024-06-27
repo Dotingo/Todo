@@ -15,6 +15,7 @@ import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -145,7 +146,7 @@ fun AlertDialog(
 
 @Composable
 fun PriorityCheckboxes(priorities: List<Boolean>, onPriorityChange: (Int, Boolean) -> Unit) {
-    val labels = listOf("Приоритет 1 ур", "Приоритет 2 ур", "Приоритет 3 ур")
+    val labels = listOf("Срочно, важно", "Не срочно, важно", "Срочно, не важно")
     val colors = listOf(isImportant1Color, isImportant2Color, isImportant3Color)
 
     priorities.forEachIndexed { index, isChecked ->
@@ -159,11 +160,13 @@ fun PriorityCheckboxes(priorities: List<Boolean>, onPriorityChange: (Int, Boolea
             Icon(Icons.Rounded.Star, contentDescription = null, tint = colors[index])
             Text(
                 labels[index],
-                fontFamily = FontFamily.Monospace,
                 fontSize = 18.sp,
                 modifier = Modifier.weight(1f)
             )
-            Checkbox(checked = isChecked, onCheckedChange = { onPriorityChange(index, it) })
+            Checkbox(checked = isChecked, onCheckedChange = { onPriorityChange(index, it) },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = colors[index]
+                ))
         }
     }
 }

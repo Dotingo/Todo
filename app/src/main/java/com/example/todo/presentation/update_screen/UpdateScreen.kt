@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,12 +16,14 @@ import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -90,7 +93,12 @@ fun UpdateScreen(
                     mainViewModel.updateTask(newValue = newValue)
                 },
                 modifier = Modifier
-                    .fillMaxWidth(.9f),
+                    .fillMaxWidth(.9f)
+                    .height(200.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
                 label = {
                     Text(
                         text = "Задача",
@@ -104,15 +112,15 @@ fun UpdateScreen(
                 textStyle = taskTextStyle
             )
             Spacer(modifier = Modifier.size(8.dp))
-            ImportantCheckbox(isImportant1Color, "Приоритет 1", isImportant1) {
+            ImportantCheckbox(isImportant1Color, "Срочно, важно", isImportant1) {
                 mainViewModel.updateIsImportant1(it)
             }
             Spacer(modifier = Modifier.size(8.dp))
-            ImportantCheckbox(isImportant2Color, "Приоритет 2", isImportant2) {
+            ImportantCheckbox(isImportant2Color, "Не срочно, важно", isImportant2) {
                 mainViewModel.updateIsImportant2(it)
             }
             Spacer(modifier = Modifier.size(8.dp))
-            ImportantCheckbox(isImportant3Color, "Приоритет 3", isImportant3) {
+            ImportantCheckbox(isImportant3Color, "Срочно, не важно", isImportant3) {
                 mainViewModel.updateIsImportant3(it)
             }
             Spacer(modifier = Modifier.size(8.dp))
@@ -138,7 +146,8 @@ fun ImportantCheckbox(
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(horizontal = 30.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -150,9 +159,14 @@ fun ImportantCheckbox(
         Text(
             text = impNum,
             fontFamily = FontFamily.Monospace,
-            fontSize = 18.sp
+            fontSize = 18.sp,
+            modifier = Modifier.weight(1f)
         )
         Spacer(modifier = Modifier.size(8.dp))
-        Checkbox(checked = isImportant, onCheckedChange = onCheckedChange)
+        Checkbox(
+            checked = isImportant,
+            onCheckedChange = onCheckedChange,
+            colors = CheckboxDefaults.colors(checkedColor = color)
+        )
     }
 }
