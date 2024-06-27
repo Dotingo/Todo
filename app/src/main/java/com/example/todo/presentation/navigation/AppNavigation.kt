@@ -4,13 +4,12 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.room.Update
 import com.example.todo.presentation.MainViewModel
 import com.example.todo.presentation.home_screen.HomeScreen
 import com.example.todo.presentation.update_screen.UpdateScreen
@@ -51,11 +50,17 @@ fun AppNavigation(mainViewModel: MainViewModel) {
                 )
             }
         ) { navBackStackEntry ->
-            navBackStackEntry.arguments?.getInt("id").let { id->
-            UpdateScreen(
-                id = id!!,
-                mainViewModel = mainViewModel,
-                onBack = { navController.popBackStack() })
+            navBackStackEntry.arguments?.getInt("id").let { id ->
+                UpdateScreen(
+                    id = id!!,
+                    mainViewModel = mainViewModel,
+                    onBack = {
+                        if (navController.currentBackStackEntry?.lifecycle?.currentState
+                            == Lifecycle.State.RESUMED
+                        ) {
+                            navController.popBackStack()
+                        }
+                    })
             }
         }
     }

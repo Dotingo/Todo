@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -103,79 +104,55 @@ fun UpdateScreen(
                 textStyle = taskTextStyle
             )
             Spacer(modifier = Modifier.size(8.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Star,
-                    contentDescription = null,
-                    tint = isImportant1Color,
-                )
-                Text(
-                    text = "Приоритет 1 ур",
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 18.sp
-                )
-                Spacer(modifier = Modifier.size(8.dp))
-                Checkbox(checked = isImportant1, onCheckedChange = { newValue ->
-                    mainViewModel.updateIsImportant1(newValue)
-                })
+            ImportantCheckbox(isImportant1Color, "Приоритет 1", isImportant1) {
+                mainViewModel.updateIsImportant1(it)
             }
             Spacer(modifier = Modifier.size(8.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Star,
-                    contentDescription = null,
-                    tint = isImportant2Color,
-                )
-                Text(
-                    text = "Приоритет 2 ур",
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 18.sp
-                )
-                Spacer(modifier = Modifier.size(8.dp))
-                Checkbox(checked = isImportant2, onCheckedChange = { newValue ->
-                    mainViewModel.updateIsImportant2(newValue)
-                })
+            ImportantCheckbox(isImportant2Color, "Приоритет 2", isImportant2) {
+                mainViewModel.updateIsImportant2(it)
             }
             Spacer(modifier = Modifier.size(8.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Star,
-                    contentDescription = null,
-                    tint = isImportant3Color,
-                )
-                Text(
-                    text = "Приоритет 3 ур",
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 18.sp
-                )
-                Spacer(modifier = Modifier.size(8.dp))
-                Checkbox(checked = isImportant3, onCheckedChange = { newValue ->
-                    mainViewModel.updateIsImportant3(newValue)
-                })
+            ImportantCheckbox(isImportant3Color, "Приоритет 3", isImportant3) {
+                mainViewModel.updateIsImportant3(it)
             }
             Spacer(modifier = Modifier.size(8.dp))
             Button(onClick = {
                 mainViewModel.updateTodo(mainViewModel.todo)
                 onBack()
             }) {
-                Text(text = "Сохранить задачу",
-                    fontSize = 16.sp)
+                Text(
+                    text = "Сохранить задачу",
+                    fontSize = 16.sp
+                )
             }
         }
+    }
+}
+
+@Composable
+fun ImportantCheckbox(
+    color: Color,
+    impNum: String,
+    isImportant: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = Icons.Rounded.Star,
+            contentDescription = null,
+            tint = color,
+        )
+        Text(
+            text = impNum,
+            fontFamily = FontFamily.Monospace,
+            fontSize = 18.sp
+        )
+        Spacer(modifier = Modifier.size(8.dp))
+        Checkbox(checked = isImportant, onCheckedChange = onCheckedChange)
     }
 }
