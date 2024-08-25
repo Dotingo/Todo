@@ -109,7 +109,7 @@ fun AlertDialog(
                         textStyle = taskTextStyle
                     )
                     PriorityCheckboxes(priorities) { index, value ->
-                        priorities = priorities.mapIndexed { i, _ -> i == index && value }
+                        priorities = List(priorities.size) { i -> i == index && value }
                     }
                 }
             },
